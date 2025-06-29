@@ -7,6 +7,8 @@ from mvp.crud.task import (
 )
 from mvp.schemas.task import TaskCreate, TaskResponse, TaskUpdate
 from mvp.utils.check_task_exists import check_task_exists
+from mvp.models.user import User
+from mvp.core.user import current_user
 
 router = APIRouter(prefix='/tasks', tags=['Tasks'])
 
@@ -19,8 +21,9 @@ router = APIRouter(prefix='/tasks', tags=['Tasks'])
 async def create_new_task(
         task: TaskCreate,
         session: AsyncSession = Depends(get_async_session),
+        cur_user: User = Depends(current_user),
 ):
-    new_task = await create_task(task, session)
+    new_task = await create_task(task, session, cur_user)
     return new_task
 
 
@@ -45,12 +48,13 @@ async def partially_update_task(
         task_id: int,
         obj_in: TaskUpdate,
         session: AsyncSession = Depends(get_async_session),
+        cur_user: User = Depends(current_user),
 ):
     task = await check_task_exists(
         task_id, session
     )
     task = await update_task(
-        task, obj_in, session
+        task, obj_in, session, cur_user
     )
     return task
 
@@ -63,11 +67,12 @@ async def partially_update_task(
 async def remove_task(
         task_id: int,
         session: AsyncSession = Depends(get_async_session),
+        cur_user: User = Depends(current_user),
 ):
     task = await check_task_exists(
         task_id, session
     )
     task = await delete_task(
-        task, session
+        task, session, cur_user
     )
     return task

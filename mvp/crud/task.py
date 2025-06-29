@@ -1,15 +1,23 @@
 from sqlalchemy import select
+from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from mvp.models.task import Task
 from mvp.models.user import User
 from mvp.schemas.task import TaskCreate, TaskUpdate
+from mvp.utils.user_role import UserRole
 
 
 async def create_task(
         new_task: TaskCreate,
         session: AsyncSession,
+        current_user: User,
 ) -> Task:
+    if current_user.role != UserRole.TEAM_ADMIN:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Только руководитель может создавать задачи"
+        )
     if new_task.executor_id:
         user = await session.get(User, new_task.executor_id)
         if not user:
@@ -35,7 +43,13 @@ async def update_task(
         db_task: Task,
         task_in: TaskUpdate,
         session: AsyncSession,
+        current_user: User,
 ) -> Task:
+    if current_user.role != UserRole.TEAM_ADMIN:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Только руководитель может создавать задачи"
+        )
     if task_in.executor_id is not None:
         if task_in.executor_id == 0:
             db_task.executor_id = None
@@ -57,7 +71,13 @@ async def update_task(
 async def delete_task(
         db_task: Task,
         session: AsyncSession,
+        current_user: User,
 ) -> Task:
+    if current_user.role != UserRole.TEAM_ADMIN:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Только руководитель может создавать задачи"
+        )
     await session.delete(db_task)
     await session.commit()
     return db_task
