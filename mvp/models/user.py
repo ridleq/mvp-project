@@ -1,14 +1,9 @@
 from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTable
-
-import enum
 from sqlalchemy import Column, Enum
+# from sqlalchemy.orm import relationship
+
 from mvp.core.db import Base
-
-
-class UserRole(str, enum.Enum):
-    USER = "user"
-    MANAGER = "manager"
-    TEAM_ADMIN = "team_admin"
+from mvp.utils.user_role import UserRole
 
 
 class User(SQLAlchemyBaseUserTable[int], Base):

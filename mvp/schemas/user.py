@@ -1,7 +1,8 @@
 from fastapi_users import schemas
-from pydantic import ConfigDict, Optional
+from pydantic import ConfigDict
+from typing import Optional
 
-from models.user import UserRole
+from mvp.models.user import UserRole
 
 
 class UserRead(schemas.BaseUser[int]):
