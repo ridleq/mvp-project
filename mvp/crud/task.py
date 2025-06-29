@@ -1,11 +1,9 @@
 from sqlalchemy import select
-from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from mvp.models.task import Task
 from mvp.models.user import User
 from mvp.schemas.task import TaskCreate, TaskUpdate
-from mvp.utils.user_role import UserRole
 
 
 async def create_task(
@@ -13,15 +11,6 @@ async def create_task(
         session: AsyncSession,
         current_user: User,
 ) -> Task:
-    if current_user.role != UserRole.TEAM_ADMIN:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Только руководитель может создавать задачи"
-        )
-    if new_task.executor_id:
-        user = await session.get(User, new_task.executor_id)
-        if not user:
-            raise ValueError(f"{new_task.executor_id} ID не найден")
     new_task_data = new_task.dict()
 
     db_task = Task(**new_task_data)
@@ -45,19 +34,6 @@ async def update_task(
         session: AsyncSession,
         current_user: User,
 ) -> Task:
-    if current_user.role != UserRole.TEAM_ADMIN:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Только руководитель может создавать задачи"
-        )
-    if task_in.executor_id is not None:
-        if task_in.executor_id == 0:
-            db_task.executor_id = None
-        else:
-            user = await session.get(User, task_in.executor_id)
-            if not user:
-                raise ValueError(f"{task_in.executor_id} ID не найден")
-
     update_data = task_in.dict(exclude_unset=True, exclude={"executor_id"})
 
     for field, value in update_data.items():
@@ -73,11 +49,6 @@ async def delete_task(
         session: AsyncSession,
         current_user: User,
 ) -> Task:
-    if current_user.role != UserRole.TEAM_ADMIN:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Только руководитель может создавать задачи"
-        )
     await session.delete(db_task)
     await session.commit()
     return db_task

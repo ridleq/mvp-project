@@ -9,3 +9,4 @@ from mvp.utils.user_role import UserRole
 class User(SQLAlchemyBaseUserTable[int], Base):
     role = Column(Enum(UserRole), default=UserRole.USER)
     tasks = relationship("Task", back_populates="executor")
+    comments = relationship("Comment", back_populates="author")

@@ -6,7 +6,9 @@ from mvp.crud.task import (
     create_task, read_all_tasks_from_db, update_task, delete_task
 )
 from mvp.schemas.task import TaskCreate, TaskResponse, TaskUpdate
-from mvp.utils.check_task_exists import check_task_exists
+from mvp.utils.for_tasks import (
+    check_task_exists, admin_required, verify_executor_exists
+)
 from mvp.models.user import User
 from mvp.core.user import current_user
 
@@ -23,6 +25,8 @@ async def create_new_task(
         session: AsyncSession = Depends(get_async_session),
         cur_user: User = Depends(current_user),
 ):
+    await verify_executor_exists(session, task.executor_id)
+    await admin_required(cur_user)
     new_task = await create_task(task, session, cur_user)
     return new_task
 
@@ -50,6 +54,8 @@ async def partially_update_task(
         session: AsyncSession = Depends(get_async_session),
         cur_user: User = Depends(current_user),
 ):
+    await verify_executor_exists(session, obj_in.executor_id)
+    await admin_required(cur_user)
     task = await check_task_exists(
         task_id, session
     )
@@ -69,6 +75,7 @@ async def remove_task(
         session: AsyncSession = Depends(get_async_session),
         cur_user: User = Depends(current_user),
 ):
+    task = await admin_required(cur_user)
     task = await check_task_exists(
         task_id, session
     )

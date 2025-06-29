@@ -2,7 +2,7 @@ from typing import Optional
 from pydantic import BaseModel, ConfigDict
 from datetime import date
 
-from mvp.utils.status import Status
+from mvp.utils.task_status import Status
 
 
 class TaskBase(BaseModel):
@@ -26,5 +26,21 @@ class TaskUpdate(BaseModel):
 class TaskResponse(TaskBase):
     id: int
     status: Status
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class CommentBase(BaseModel):
+    content: str
+
+
+class CommentCreate(CommentBase):
+    pass
+
+
+class CommentResponse(CommentBase):
+    id: int
+    author_id: int
+    task_id: int
 
     model_config = ConfigDict(from_attributes=True)

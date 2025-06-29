@@ -4,7 +4,7 @@ from sqlalchemy import (
 from sqlalchemy.orm import relationship
 
 from mvp.core.db import Base
-from mvp.utils.status import Status
+from mvp.utils.task_status import Status
 
 
 class Task(Base):
@@ -18,3 +18,17 @@ class Task(Base):
     )
     executor_id = Column(Integer, ForeignKey('user.id'), nullable=True)
     executor = relationship("User", back_populates="tasks")
+    comments = relationship(
+        "Comment",
+        back_populates="task",
+        cascade="all, delete-orphan"
+    )
+
+
+class Comment(Base):
+    content = Column(Text, nullable=False)
+    task_id = Column(Integer, ForeignKey("task.id"), nullable=False)
+    author_id = Column(Integer, ForeignKey("user.id"), nullable=False)
+
+    task = relationship("Task", back_populates="comments")
+    author = relationship("User", back_populates="comments")
