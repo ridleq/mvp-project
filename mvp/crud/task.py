@@ -1,8 +1,8 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from fastapi.encoders import jsonable_encoder
 
 from mvp.models.task import Task
+from mvp.models.user import User
 from mvp.schemas.task import TaskCreate, TaskUpdate
 
 
@@ -10,6 +10,10 @@ async def create_task(
         new_task: TaskCreate,
         session: AsyncSession,
 ) -> Task:
+    if new_task.executor_id:
+        user = await session.get(User, new_task.executor_id)
+        if not user:
+            raise ValueError(f"{new_task.executor_id} ID не найден")
     new_task_data = new_task.dict()
 
     db_task = Task(**new_task_data)
@@ -32,12 +36,18 @@ async def update_task(
         task_in: TaskUpdate,
         session: AsyncSession,
 ) -> Task:
-    obj_data = jsonable_encoder(db_task)
-    update_data = task_in.dict(exclude_unset=True)
+    if task_in.executor_id is not None:
+        if task_in.executor_id == 0:
+            db_task.executor_id = None
+        else:
+            user = await session.get(User, task_in.executor_id)
+            if not user:
+                raise ValueError(f"{task_in.executor_id} ID не найден")
 
-    for field in obj_data:
-        if field in update_data:
-            setattr(db_task, field, update_data[field])
+    update_data = task_in.dict(exclude_unset=True, exclude={"executor_id"})
+
+    for field, value in update_data.items():
+        setattr(db_task, field, value)
     session.add(db_task)
     await session.commit()
     await session.refresh(db_task)

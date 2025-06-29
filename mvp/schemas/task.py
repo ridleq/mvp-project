@@ -9,6 +9,7 @@ class TaskBase(BaseModel):
     name: str
     description: str
     deadline: date
+    executor_id: Optional[int] = None
 
 
 class TaskCreate(TaskBase):
