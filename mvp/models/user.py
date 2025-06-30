@@ -5,6 +5,7 @@ from sqlalchemy.orm import relationship
 from mvp.core.db import Base
 from mvp.utils.user_role import UserRole
 from mvp.models.team import team_user_association
+from .meeting import meeting_user_association
 
 
 class User(SQLAlchemyBaseUserTable[int], Base):
@@ -18,3 +19,8 @@ class User(SQLAlchemyBaseUserTable[int], Base):
         back_populates="members"
     )
     given_reviews = relationship("TaskReview", back_populates="reviewer")
+    meetings = relationship(
+        "Meeting",
+        secondary=meeting_user_association,
+        back_populates="participants"
+    )
