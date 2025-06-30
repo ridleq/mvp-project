@@ -17,3 +17,4 @@ class User(SQLAlchemyBaseUserTable[int], Base):
         secondary=team_user_association,
         back_populates="members"
     )
+    given_reviews = relationship("TaskReview", back_populates="reviewer")

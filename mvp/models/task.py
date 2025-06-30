@@ -23,6 +23,11 @@ class Task(Base):
         back_populates="task",
         cascade="all, delete-orphan"
     )
+    reviews = relationship(
+        "TaskReview",
+        back_populates="task",
+        cascade="all, delete-orphan"
+    )
 
 
 class Comment(Base):
