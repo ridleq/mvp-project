@@ -2,15 +2,13 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from mvp.core.db import get_async_session
-from mvp.crud.task import (
-    create_task, read_all_tasks_from_db, update_task, delete_task
-)
-from mvp.schemas.task import TaskCreate, TaskResponse, TaskUpdate
-from mvp.utils.for_tasks import (
-    check_task_exists, admin_required, verify_executor_exists
-)
-from mvp.models.user import User
 from mvp.core.user import current_user
+from mvp.crud.task import (create_task, delete_task, read_all_tasks_from_db,
+                           update_task)
+from mvp.models.user import User
+from mvp.schemas.task import TaskCreate, TaskResponse, TaskUpdate
+from mvp.utils.for_tasks import (admin_required, check_task_exists,
+                                 verify_executor_exists)
 
 router = APIRouter(prefix='/tasks', tags=['Tasks'])
 

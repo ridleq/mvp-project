@@ -1,7 +1,8 @@
 from sqladmin import ModelView
-from mvp.models.user import User
+
 from mvp.models.task import Task
 from mvp.models.team import Team
+from mvp.models.user import User
 
 
 class UserAdmin(ModelView, model=User):

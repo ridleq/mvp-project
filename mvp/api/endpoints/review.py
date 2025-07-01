@@ -1,15 +1,14 @@
-from fastapi import APIRouter, Depends
-from sqlalchemy.ext.asyncio import AsyncSession
-from typing import Optional
 from datetime import datetime
+from fastapi import APIRouter, Depends
+from typing import Optional
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from mvp.core.user import current_user
 from mvp.core.db import get_async_session
-from mvp.models.user import User
-from mvp.schemas.review import (
-    TaskReviewCreate, TaskReviewResponse, UserAverageRating
-)
+from mvp.core.user import current_user
 from mvp.crud.review import create_review, get_average_rating, get_user_reviews
+from mvp.models.user import User
+from mvp.schemas.review import (TaskReviewCreate, TaskReviewResponse,
+                                UserAverageRating)
 from mvp.utils.for_tasks import admin_required, check_task_exists
 
 router = APIRouter(tags=['Review'])

@@ -1,10 +1,10 @@
+from fastapi import HTTPException
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
-from fastapi import HTTPException
 
-from mvp.models.user import User
 from mvp.models.meeting import Meeting
+from mvp.models.user import User
 from mvp.schemas.meeting import MeetingCreate
 from mvp.utils.for_meeting import check_meeting_conflicts
 

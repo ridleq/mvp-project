@@ -1,2 +1,2 @@
 from mvp.core.db import Base  # noqa
-from mvp.models import Task, User, Comment # noqa
+from mvp.models import Comment, Task, User  # noqa

@@ -1,8 +1,9 @@
-from sqlalchemy import (
-    Column, Integer, String, ForeignKey, Table, ForeignKeyConstraint
-)
+from sqlalchemy import (Column, ForeignKey, ForeignKeyConstraint, Integer,
+                        String, Table)
 from sqlalchemy.orm import relationship
+
 from mvp.core.db import Base
+
 
 team_user_association = Table(
     "team_user_association",

@@ -1,7 +1,6 @@
-from sqlalchemy import select
 from typing import List, Optional
-
 from fastapi.encoders import jsonable_encoder
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from mvp.models.task import Task

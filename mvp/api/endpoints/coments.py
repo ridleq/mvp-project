@@ -2,17 +2,15 @@ from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from mvp.core.db import get_async_session
-from mvp.schemas.task import CommentResponse, CommentCreate
+from mvp.core.user import current_user
 from mvp.crud.comments import create_comment
 from mvp.models.user import User
-from mvp.core.user import current_user
+from mvp.schemas.task import CommentCreate, CommentResponse
+from mvp.utils.for_comments import (get_comments_by_task,
+                                    verify_comment_exists,
+                                    verify_comment_owner)
 from mvp.utils.for_tasks import check_task_exists
-from mvp.utils.for_comments import (
-    get_comments_by_task,
-    verify_comment_exists,
-    verify_comment_owner
 
-)
 router = APIRouter(
     prefix="/tasks/{task_id}/comments",
     tags=["Comments"]

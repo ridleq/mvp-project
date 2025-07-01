@@ -1,6 +1,6 @@
+from datetime import date
 from typing import Optional
 from pydantic import BaseModel, ConfigDict
-from datetime import date
 
 from mvp.utils.task_status import Status
 

@@ -3,10 +3,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from mvp.core.db import get_async_session
 from mvp.core.user import current_user
-from mvp.schemas.meeting import MeetingCreate, MeetingResponse
-from mvp.crud.meeting import create_meeting, get_user_meetings, delete_meeting
+from mvp.crud.meeting import create_meeting, delete_meeting, get_user_meetings
 from mvp.models.user import User
-
+from mvp.schemas.meeting import MeetingCreate, MeetingResponse
 
 router = APIRouter(
     prefix="/meetings",

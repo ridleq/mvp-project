@@ -1,6 +1,4 @@
-from sqlalchemy import (
-    Column, Date, String, Text, Enum, Integer, ForeignKey
-)
+from sqlalchemy import Column, Date, Enum, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import relationship
 
 from mvp.core.db import Base

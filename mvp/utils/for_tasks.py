@@ -1,10 +1,10 @@
-from sqlalchemy.ext.asyncio import AsyncSession
-from fastapi import Depends, HTTPException, status
 from typing import Optional
+from fastapi import Depends, HTTPException, status
+from sqlalchemy.ext.asyncio import AsyncSession
 
+from mvp.core.user import current_user
 from mvp.models.task import Task
 from mvp.models.user import User
-from mvp.core.user import current_user
 from mvp.utils.user_role import UserRole
 
 

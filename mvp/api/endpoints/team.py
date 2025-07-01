@@ -1,19 +1,17 @@
 from fastapi import APIRouter, Depends
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 from mvp.core.db import get_async_session
-from mvp.crud.team import team_create
-from mvp.schemas.team import (
-    TeamCreate, TeamBase, TeamMembersResponse, TeamUpdate
-)
-from mvp.utils.for_tasks import admin_required
-from mvp.models.user import User
 from mvp.core.user import current_user
+from mvp.crud.team import team_create
 from mvp.models.team import Team
+from mvp.models.user import User
+from mvp.schemas.team import (TeamBase, TeamCreate, TeamMembersResponse,
+                              TeamUpdate)
+from mvp.utils.for_tasks import admin_required
 from mvp.utils.for_team import get_team_or_404
-
 
 router = APIRouter(prefix='/team', tags=['Team'])
 

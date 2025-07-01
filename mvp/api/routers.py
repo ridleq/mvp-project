@@ -1,10 +1,7 @@
 from fastapi import APIRouter
 
-from .endpoints import (
-    user_router, task_router,
-    comment_router, team_router,
-    review_router, meeting_router
-)
+from .endpoints import (comment_router, meeting_router, review_router,
+                        task_router, team_router, user_router)
 
 main_router = APIRouter()
 main_router.include_router(user_router)

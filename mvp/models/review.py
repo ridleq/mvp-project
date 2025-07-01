@@ -1,8 +1,6 @@
-from sqlalchemy import (
-    Column, Integer, ForeignKey, DateTime
-)
-from sqlalchemy.orm import relationship
 from datetime import datetime
+from sqlalchemy import Column, DateTime, ForeignKey, Integer
+from sqlalchemy.orm import relationship
 
 from mvp.core.db import Base
 

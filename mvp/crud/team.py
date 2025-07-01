@@ -1,8 +1,8 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from mvp.models.user import User
 from mvp.models.team import Team
+from mvp.models.user import User
 from mvp.schemas.team import TeamCreate
 
 

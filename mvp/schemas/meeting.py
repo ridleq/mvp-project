@@ -1,6 +1,6 @@
-from pydantic import BaseModel, ConfigDict, Field, field_validator
 from datetime import datetime
 from typing import List
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from .user import UserRead
 

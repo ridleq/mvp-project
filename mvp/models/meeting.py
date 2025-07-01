@@ -1,10 +1,9 @@
-from sqlalchemy import (
-    Column, DateTime, ForeignKey, Table
-)
-from sqlalchemy.orm import relationship
+from sqlalchemy import Column, DateTime, ForeignKey, Table
 from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy.orm import relationship
 
 from mvp.core.db import Base
+
 
 meeting_user_association = Table(
     'meeting_user_association',
