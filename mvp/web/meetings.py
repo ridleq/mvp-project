@@ -4,6 +4,8 @@ from fastapi.templating import Jinja2Templates
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
+from pathlib import Path
+import os
 
 from mvp.core.db import get_async_session
 from mvp.models.meeting import Meeting
@@ -11,7 +13,11 @@ from mvp.models.user import User
 from mvp.core.user import current_user
 from datetime import datetime
 
-templates = Jinja2Templates(directory="mvp/templates")
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
+
 router = APIRouter(prefix="/meetings", tags=["Meetings Web"])
 
 
@@ -21,7 +27,6 @@ async def meetings_page(
     session: AsyncSession = Depends(get_async_session),
     user: User = Depends(current_user)
 ):
-    # Получаем все встречи участником которых является user
     q = await session.execute(
         select(Meeting)
         .options(selectinload(Meeting.participants))
@@ -31,7 +36,9 @@ async def meetings_page(
     )
     meetings = q.scalars().unique().all()
     return templates.TemplateResponse(
-        "meetings.html", {"request": request, "meetings": meetings, "user": user}
+        "meetings.html", {
+            "request": request, "meetings": meetings, "user": user
+        }
     )
 
 
@@ -44,14 +51,11 @@ async def meeting_create(
     session: AsyncSession = Depends(get_async_session),
     user: User = Depends(current_user)
 ):
-    # Парсим время
     start_dt = datetime.fromisoformat(start_time)
     end_dt = datetime.fromisoformat(end_time)
     ids = [int(i.strip()) for i in participant_ids.split(",") if i.strip().isdigit()]
-    # Включаем текущего пользователя если не указан
     if user.id not in ids:
         ids.append(user.id)
-    # Получаем объекты пользователей
     part_q = await session.execute(select(User).where(User.id.in_(ids)))
     participants = list(part_q.scalars())
     # Создаем встречу

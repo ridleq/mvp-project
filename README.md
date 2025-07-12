@@ -13,8 +13,8 @@
 
 3. **Создайте вирутальное окружение:**
 ```bash
-   python -m venv venv
-   source venv/scrtipt/activate
+   - Linux/macOS: python3 -m venv venv
+   - Windows: python -m venv venv или py -3 -m venv venv
 ```
 4. **Установите зависимости:**
 ```bash
