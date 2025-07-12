@@ -1,3 +1,4 @@
+from fastapi import Response, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -51,4 +52,4 @@ async def delete_task(
 ) -> Task:
     await session.delete(db_task)
     await session.commit()
-    return db_task
+    return Response(status_code=status.HTTP_204_NO_CONTENT)

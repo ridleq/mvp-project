@@ -20,12 +20,7 @@
 ```bash
    pip install -r requirements.txt
 ```
-5. **Создайте и выполните миграции:**
-```bash
-   alembic revision --autogenerate -m "migration"
-   alembic upgrade head
-```
-6. **Запустите сервер из корневой директории:**
+5. **Запустите сервер из корневой директории:**
 ```bash
    uvicorn mvp.main:app --reload
 ```

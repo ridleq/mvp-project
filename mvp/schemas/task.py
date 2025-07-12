@@ -21,6 +21,7 @@ class TaskUpdate(BaseModel):
     description: Optional[str] = None
     deadline: Optional[date] = None
     status: Optional[Status] = None
+    executor_id: Optional[int] = None
 
 
 class TaskResponse(TaskBase):
